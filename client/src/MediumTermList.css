@@ -1,0 +1,58 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #FFF;
+  background-color: #121212;
+}
+
+td {
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  border-bottom: 3px solid #ddd;
+  padding-bottom: 8px;
+} 
+
+tr { 
+  vertical-align: top; 
+}
+
+tr:hover { background-color: #b3b3b3; }
+
+th, td {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #FFF;
+  padding-top: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  text-align: left;
+  color: white;
+}
+
+#albumHead {
+  text-align: left;
+  padding-left: 12px;
+}
+
+#trackHead {
+  text-align: left;
+}
+
+#indexHead {
+  text-align: left;
+  width: 48px;
+}
+
+.table {  
+  margin-left:auto; 
+  margin-right:auto;
+  color: #FFFFFF;
+}
+
+tbody {
+  background-color: #212121;
+}
