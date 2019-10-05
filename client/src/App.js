@@ -320,11 +320,13 @@ class App extends React.Component {
         <Navbar fixed="top" class="navbar navbar-inverse navbar-fixed-top navbar-dark bg-dark">
           <ul className="nav">
             {/* work on navbar */}
-            <li><strong>BEAT SHARE</strong></li>
-            <li className="playlist">
-              {/* FINISH IMPLEMENTING --href*/}
-              <button className="playlistButton" onClick={this.makePlaylist}>Save as Spotify playlist!</button>          
-            </li>
+            <div className="logo">
+              <li><strong>BEAT SHARE</strong></li>
+              <li className="playlist">
+                {/* FINISH IMPLEMENTING --href*/}
+                <button className="playlistButton" onClick={this.makePlaylist}>Save as Spotify playlist!</button>          
+              </li>
+            </div>
             <li className="log">
               <button id="logButton" href='http://localhost:8888'>Logout</button>
             </li>
