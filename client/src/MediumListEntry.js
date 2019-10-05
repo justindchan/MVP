@@ -2,7 +2,7 @@ import React from 'react';
 import './MediumListEntry.css';
 
 const MediumListEntry = (props) => {
-  console.log(props)
+  // console.log(props)
   const artist = [];
   for (let i = 0; i < props.track.artists.length; i++) {
     artist.push(props.track.artists[i].name);

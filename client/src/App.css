@@ -13,21 +13,27 @@
   margin-top: 10px;
 }
 .navbar {
-  display: flex;
+  display: inline-block;
   background-color: #282c34;
   height: 48px;
   position: relative;
-  min-height: 50px;
+  /* min-height: 50px; */
   margin-bottom: 20px;
   border-color: #090909;
-  top: 0;
+  /* top: 0; */
   border-bottom: solid 1px grey;
-  border-width: 0 0 1px;
+  /* border-width: 0 0 1px; */
   /* color: #FFFFFF; */
+  /* min-width: 1000px; */
+  /* max-width: 100%; */
+  white-space: nowrap;
+
 }
 
 .nav {
   width: 100%;
+  /* min-width:165px;
+  position: absolute; */
 }
 
 .playlist {
@@ -35,8 +41,15 @@
   margin-left: 5%;
 }
 
-#playlistButton {
+.playlistButton {
+  border-radius: 10px 10px 10px 10px;
+  border: hidden;
+  background-color: rgb(29, 110, 185);
   color: #FFFFFF;
+  font-size: 16px;
+  /* width: 1px; */
+  /* height: 40px; */
+
 }
 
 .log {
@@ -46,6 +59,11 @@
 
 #logButton {
   color: #FFFFFF;
+  background-color: transparent;
+  border: hidden;
+  border-radius: 40px 40px 40px 40px;
+  font-size: 16px;
+
 }
 
 #nowPlaying {

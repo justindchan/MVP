@@ -7,15 +7,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+// import Nav from 'react-bootstrap/Nav';
 // import Button from 'react-bootstrap/Button'
 import axios from 'axios';
+import $ from 'jquery';
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
 
 //NEED TO FIGURE OUT HOW TO APPLY REFRESH TOKEN FOR DATA FETCH, CURRENTLY MANUALLY GENERATING NEW ACCESS TOKEN EVERY HOUR PER EXPIRATION.
-const accessToken = 'BQCA0rlU0HzfAYEI8kZG1jTJ4qS7ySxZqHa_So085usSKtg5ofi5R6I6f_t0iYtJVUZBHHx8JtbRf6ZQpWFN20RcKCm8iCr1Z3K3-u_QxRcQ9V16u7Wo7QbVBrcLdSzcCc2ANneYmu5c8vfrgXyoBtx9lnwxam6FqNil9lgTi95V4kWed3kvqp6oP-YMHup367Kx5MVhJTC1HsWZy_f1';
-const playlistToken = 'BQC_8KNl-lULEiiUrfd-ZGVmmxyZ24MJwyaofy6Gx8iALqkKjgzC6Yj15_NAuKD0M-5p-YRH6Hsn5aW40QHIzLTjSBFuHLVcJKbRP7GnpcNqORiTl0mUkaaFkjd_ccjYOcTHdkLfhT2SKQHMKgaFOMjHt9h3r819NveVv5dF7Y0af559DnACgmMZP_dusVu078LoY8nCQh144nvvbRKT';
+let accessToken = '';
+
 class App extends React.Component {
   constructor(){
     super();
@@ -24,49 +25,73 @@ class App extends React.Component {
     if (token) {
       spotifyApi.setAccessToken(token);
     }
+    accessToken = token;
+
     this.state = {
       loggedIn: token ? true : false,
       nowPlaying: { name: 'Not Checked', albumArt: '' },
+      userId: '',
       shortTermTrackData: [],
       mediumTermTrackData: [],
       longTermTrackData: [],
       activeTab: '',
     }
-    this.createPlaylist = this.createPlaylist.bind(this);
     this.handleTab = this.handleTab.bind(this);
+    this.getUserInfo = this.getUserInfo.bind(this);
     this.getMyTopTracksLongTerm = this.getMyTopTracksLongTerm.bind(this);
     this.getMyTopTracksMediumTerm = this.getMyTopTracksMediumTerm.bind(this);
     this.getMyTopTracksShortTerm = this.getMyTopTracksShortTerm.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.makePlaylist = this.makePlaylist.bind(this);
   }
-
+  
   componentDidMount() {
+    this.getUserInfo();
     this.getMyTopTracksShortTerm();
     this.getMyTopTracksMediumTerm();
     this.getMyTopTracksLongTerm();
   } 
-
+  
   getHashParams() {
     var hashParams = {};
     var e, r = /([^&;=]+)=?([^&;]*)/g,
-        q = window.location.hash.substring(1);
+    q = window.location.hash.substring(1);
     e = r.exec(q)
     while (e) {
-       hashParams[e[1]] = decodeURIComponent(e[2]);
-       e = r.exec(q);
+      hashParams[e[1]] = decodeURIComponent(e[2]);
+      e = r.exec(q);
     }
     return hashParams;
   }
 
+  getUserInfo() {
+    axios.get('https://api.spotify.com/v1/me', {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`
+      }
+    })
+    .then((response) => {
+      this.setState({ userId: `${response.data.id}` })
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    .then(() => {
+    })
+  }
+  
   getNowPlaying(){
     spotifyApi.getMyCurrentPlaybackState()
       .then((response) => {
         this.setState({
           nowPlaying: { 
-              name: response.item.name, 
-              albumArt: response.item.album.images[0].url
-            }
+            name: response.item.name, 
+            albumArt: response.item.album.images[0].url
+          }
         });
+      })
+      .catch((response) => {
+        console.log(response);
       })
       window.scroll({
         top: 0,
@@ -76,29 +101,33 @@ class App extends React.Component {
 
   getMyTopTracksShortTerm() {
     const that = this;
-    axios.get('https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=50', {headers: {"Authorization": `Bearer ${accessToken}`}})
+    axios.get('https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=50', {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": `application/json`
+      }
+    })
     .then(function (response) {
-      that.setState ({
-        shortTermTrackData: response
-      })
+      that.setState ({ shortTermTrackData: response })
     })
     .catch(function (error) {
       console.log(error);
     })
     .then(function () {
-      that.setState({
-        activeTab: 'shortTerm'
-      })
+      that.setState({ activeTab: 'shortTerm' })
     });
   }
 
   getMyTopTracksMediumTerm() {
     const that = this;
-    axios.get('https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=50', {headers: {"Authorization": `Bearer ${accessToken}`}})
+    axios.get('https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=50', {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": `application/json`
+      }
+    })
     .then(function (response) {
-      that.setState ({
-        mediumTermTrackData: response
-      })
+      that.setState ({ mediumTermTrackData: response })
     })
     .catch(function (error) {
       console.log(error);
@@ -109,11 +138,14 @@ class App extends React.Component {
 
   getMyTopTracksLongTerm() {
     const that = this;
-    axios.get('https://api.spotify.com/v1/me/top/tracks?time_range=long_term&limit=50', {headers: {"Authorization": `Bearer ${accessToken}`}})
+    axios.get('https://api.spotify.com/v1/me/top/tracks?time_range=long_term&limit=50', {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": `application/json`      
+      }
+    })
     .then(function (response) {
-      that.setState ({
-        longTermTrackData: response
-      })
+      that.setState ({ longTermTrackData: response })
     })
     .catch(function (error) {
       console.log(error);
@@ -133,16 +165,127 @@ class App extends React.Component {
   }
 
   // FINSIH IMPLEMENTING
-  createPlaylist () {
-    const tab = this.state.activeTab;
+  makePlaylist () {
+    const shortTermTracks = this.state.shortTermTrackData.data;
+    const mediumTermTracks = this.state.mediumTermTrackData.data;
+    const longTermTracks = this.state.longTermTrackData.data;
+    const userId = this.state.userId;
+    const createUrl = `https://api.spotify.com/v1/users/${userId}/playlists`;
+    let tab = this.state.activeTab;
+
+    let shortTermUrisArr = [];
+    shortTermTracks.items.map((track) => {shortTermUrisArr.push(track.uri)})
+    let shortTermUris = {uris: shortTermUrisArr};
+    
+    let mediumTermUrisArr = [];
+    mediumTermTracks.items.map((track) => {mediumTermUrisArr.push(track.uri)})
+    let mediumTermUris = {uris: mediumTermUrisArr};
+
+    let longTermUrisArr = [];
+    longTermTracks.items.map((track) => {longTermUrisArr.push(track.uri)})
+    let longTermUris = {uris: longTermUrisArr};
+
     if (tab === 'shortTerm') {
-      const that = this;
-      axios.post('https://api.spotify.com/v1/playlists/Your_Top_Songs(last_4_weeks)/tracks', {headers: {"Authorization": `Bearer ${playlistToken}`}})
-      .then(function (response) {
-        console.log(response)
+      const jsonData = {"name": "Your Favorite Songs Playlist (last 4 weeks)"};
+      $.ajax({
+        type: 'POST',
+        url: createUrl,
+        data: JSON.stringify(jsonData),
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        success: function(playlistInfo) {
+          console.log('Woo! :)');
+          const playlistId = playlistInfo.id;
+          const addUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
+          $.ajax({
+            type: 'POST',
+            url: addUrl,
+            data: JSON.stringify(shortTermUris),
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json'
+            },
+            success: function(result) {
+              window.location.href = playlistInfo.external_urls.spotify;
+            },
+            error: function() {
+              console.log('Error! :((');
+            }
+          })
+        },
+        error: function() {
+          console.log('Error! :(');
+        }
       })
-      .catch(function (error) {
-        console.log(error);
+    } else if (tab === 'mediumTerm') {
+      const jsonData = {"name": "Your Favorite Songs Playlist (last 6 months)"};
+      $.ajax({
+        type: 'POST',
+        url: createUrl,
+        data: JSON.stringify(jsonData),
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        success: function(playlistInfo) {
+          console.log('Woo! :)');
+          const playlistId = playlistInfo.id;
+          const addUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
+          $.ajax({
+            type: 'POST',
+            url: addUrl,
+            data: JSON.stringify(mediumTermUris),
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json'
+            },
+            success: function(result) {
+              window.location.href = playlistInfo.external_urls.spotify;
+            },
+            error: function() {
+              console.log('Error! :((');
+            }
+          })
+        },
+        error: function() {
+          console.log('Error! :(');
+        }
+      })
+    } else if (tab === 'longTerm') {
+      const jsonData = {"name": "Your Favorite Songs Playlist (last couple years)"};
+      $.ajax({
+        type: 'POST',
+        url: createUrl,
+        data: JSON.stringify(jsonData),
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        success: function(playlistInfo) {
+          console.log('Woo! :)');
+          const playlistId = playlistInfo.id;
+          const addUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
+          $.ajax({
+            type: 'POST',
+            url: addUrl,
+            data: JSON.stringify(longTermUris),
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json'
+            },
+            success: function(result) {
+              window.location.href = playlistInfo.external_urls.spotify;
+            },
+            error: function() {
+              console.log('Error! :((');
+            }
+          })
+        },
+        error: function() {
+          console.log('Error! :(');
+        }
       })
     }
   }
@@ -156,12 +299,13 @@ class App extends React.Component {
 
   render() {
     let list = 'CURRENTLY JUDGING YOUR MUSIC TASTE...';
-    const tab = this.state.activeTab;
+    let tab = this.state.activeTab;
     const shortTermTracks = this.state.shortTermTrackData.data;
     const mediumTermTracks = this.state.mediumTermTrackData.data;
     const longTermTracks = this.state.longTermTrackData.data;
     const albumArt = this.state.nowPlaying.albumArt;
     const loggedIn = this.state.loggedIn;
+    const trackName = this.state.nowPlaying.name;
 
     if (tab === 'shortTerm') {
       list = <ShortTermList data={shortTermTracks} />
@@ -170,25 +314,26 @@ class App extends React.Component {
     } else if (tab === 'longTerm') {
       list = <LongTermList data={longTermTracks} />
     }
+
     return (
       <div className="App">
         <Navbar fixed="top" class="navbar navbar-inverse navbar-fixed-top navbar-dark bg-dark">
-          <div className="nav">
+          <ul className="nav">
             {/* work on navbar */}
-            <span><strong>BEAT SHARE</strong></span>
-            <span className="playlist">
-              {/* FINISH IMPLEMENTING */}
-              <a id="playlistButton" href="https://open.spotify.com/playlist/0lXkQ5VGITG4FdiDkgoBoE" onClick={this.createPlaylist} >Create a playlist!</a>          
-            </span>
-            <span className="log">
-              <a id="logButton" href='http://localhost:8888'>Logout</a>
-            </span>
-          </div>
+            <li><strong>BEAT SHARE</strong></li>
+            <li className="playlist">
+              {/* FINISH IMPLEMENTING --href*/}
+              <button className="playlistButton" onClick={this.makePlaylist}>Save as Spotify playlist!</button>          
+            </li>
+            <li className="log">
+              <button id="logButton" href='http://localhost:8888'>Logout</button>
+            </li>
+          </ul>
         </Navbar>
         <br/>
         <br/>
         <div id="nowPlaying">
-          <strong>Now Playing:  '{ this.state.nowPlaying.name }' </strong>
+          <strong>Now Playing:  '{ trackName }' </strong>
         </div>
         <div>
           {albumArt ? <img id="art" src={albumArt} style={{ height: 500 }}/> : null}
@@ -199,7 +344,7 @@ class App extends React.Component {
           </button>
         }
         <div className="container">
-          <Tabs defaultActiveKey="1" className="nav-tabs" onSelect={this.handleTab} onClick={this.handleScroll}>
+          <Tabs defaultActiveKey="1" className="tabs" onSelect={this.handleTab} onClick={this.handleScroll}>
               { loggedIn &&
                 <Tab eventKey="1" title="Last 4 weeks" className="Tab" >
                 </Tab>

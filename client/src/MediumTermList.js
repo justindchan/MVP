@@ -3,7 +3,7 @@ import './MediumTermList.css';
 import MediumListEntry from './MediumListEntry.js';
 
 const MediumTermList = (props) => {
-  console.log(props.data.items)
+  // console.log(props.data.items)
   return (
     <table className="table" >
       <thead>
