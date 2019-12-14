@@ -164,7 +164,7 @@ class App extends React.Component {
     } 
   }
 
-  // FINSIH IMPLEMENTING
+  // FINSIH IMPLEMENTING (refactoring?)
   makePlaylist () {
     const shortTermTracks = this.state.shortTermTrackData.data;
     const mediumTermTracks = this.state.mediumTermTrackData.data;
