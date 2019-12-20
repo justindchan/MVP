@@ -10,3 +10,4 @@
 - DEV URL: localhost:8888 -> authenticates and redirects to localhost:3000
 
 ## 
+Spotify api application
