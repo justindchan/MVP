@@ -12,13 +12,15 @@
 
  - Finally, after browsing their results, users may decide to share their results as a Spotify Playlist.  Upon clicking a button in the top nav bar, the app will bundle the results of the currently selected tab into a POST request to the Spotify API.  On the user's Spotify account, a new playlist will be created consisting of all the songs from the selected time period.  The user can then treat this playlist like any other user created Spotify Playlist.   
 
-## Available Scripts to start app:
+## DEV SCRIPTS:
 
-- Server start: npm start in server folder
+- Auth Server start: npm start in server dir
 
-- Client start: npm start in client folder
+- Client start: npm start in client dir
 
 - DEV URL: localhost:8888 -> authenticates and redirects to localhost:3000
 
-## 
+## ROAD MAP FEATURES:
 Spotify api application 2.0a
+ - widget player in navbar 
+ - play button on track results
