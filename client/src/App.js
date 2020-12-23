@@ -13,6 +13,7 @@ import axios from 'axios';
 import $ from 'jquery';
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
+const logout = "http://localhost:8888";
 
 //NEED TO FIGURE OUT HOW TO APPLY REFRESH TOKEN FOR DATA FETCH, CURRENTLY MANUALLY GENERATING NEW ACCESS TOKEN EVERY HOUR PER EXPIRATION.
 let accessToken = '';
@@ -43,6 +44,7 @@ class App extends React.Component {
     this.getMyTopTracksShortTerm = this.getMyTopTracksShortTerm.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.makePlaylist = this.makePlaylist.bind(this);
+    this.logout = this.logout.bind(this);
   }
   
   componentDidMount() {
@@ -92,6 +94,12 @@ class App extends React.Component {
       })
       .catch((response) => {
         console.log(response);
+        this.setState({
+          nowPlaying: {
+            name: "Play a track first!",
+            albumArt: ""
+          }
+        })
       })
       window.scroll({
         top: 0,
@@ -297,6 +305,14 @@ class App extends React.Component {
     });
   }
 
+  logout() {
+    console.log("logout clicked!");
+    accessToken = null;
+    spotifyApi.setAccessToken(null);
+    window.location = logout;
+    
+  }
+
   render() {
     let list = 'CURRENTLY JUDGING YOUR MUSIC TASTE...';
     let tab = this.state.activeTab;
@@ -317,7 +333,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <Navbar fixed="top" class="navbar navbar-inverse navbar-fixed-top navbar-dark bg-dark">
+        <Navbar fixed="top" className="navbar navbar-inverse navbar-fixed-top navbar-dark bg-dark">
           <ul className="nav">
             {/* work on navbar */}
             <div className="logo">
@@ -328,7 +344,7 @@ class App extends React.Component {
               </li>
             </div>
             <li className="log">
-              <button id="logButton" href='http://localhost:8888'>Logout</button>
+              <button id="logButton" onClick={this.logout}>Logout</button>
             </li>
           </ul>
         </Navbar>
@@ -355,7 +371,7 @@ class App extends React.Component {
                 <Tab eventKey="2" title="Last 6 months" className="Tab">
                 </Tab>
               }
-              { this.state.loggedIn &&
+              { loggedIn &&
                 <Tab eventKey="3" title="Last couple years" className="Tab">
                 </Tab>
               }

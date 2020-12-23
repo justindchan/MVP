@@ -22,5 +22,6 @@
 
 ## ROAD MAP FEATURES:
 Spotify api application 2.0a
+ - logout function
  - widget player in navbar 
  - play button on track results
