@@ -23,6 +23,7 @@
 ## ROAD MAP FEATURES:
 Spotify api application 2.0a
  - logout function - DONE
+ - fix scroll behavior when not playing
  - play button on track results
  - widget player in navbar 
  - enhance UI
