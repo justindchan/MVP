@@ -25,6 +25,7 @@ Spotify api application 2.0a
  - logout function - DONE
  - fix scroll behavior when not playing - DONE
  - cleanup buttons - DONE
+ - ADD SPOTIFY LOGO ASAP
  - back to top button when scrolled past main
  - play button on track results
  - widget player in navbar 
