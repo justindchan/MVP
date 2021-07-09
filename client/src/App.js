@@ -7,13 +7,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Navbar from 'react-bootstrap/Navbar';
-// import Nav from 'react-bootstrap/Nav';
-// import Button from 'react-bootstrap/Button'
 import axios from 'axios';
 import $ from 'jquery';
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
 const logout = "http://localhost:8888";
+// import Nav from 'react-bootstrap/Nav';
+// import Button from 'react-bootstrap/Button'
 
 //NEED TO FIGURE OUT HOW TO APPLY REFRESH TOKEN FOR DATA FETCH, CURRENTLY MANUALLY GENERATING NEW ACCESS TOKEN EVERY HOUR PER EXPIRATION.
 let accessToken = '';
@@ -299,10 +299,12 @@ class App extends React.Component {
   }
 
   handleScroll() {
-    window.scroll({
-      top: 560,
-      behavior: 'smooth'
-    });
+    if (this.state.nowPlaying.albumArt) {
+      window.scroll({
+        top: 560,
+        behavior: 'smooth'
+      });
+    }
   }
 
   logout() {
