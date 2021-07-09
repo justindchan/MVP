@@ -5,7 +5,6 @@
 }
 
 .container {
-  /* display: flex; */
   padding-left: 5%;
   padding-right: 5%;
 }
@@ -23,11 +22,6 @@
   top: 0;
   border-bottom: solid 1px grey;
   border-width: 0 0 1px;
-  /* color: #FFFFFF; */
-  /* min-width: 1000px; */
-  /* max-width: 100%; */
-  /* white-space: nowrap; */
-
 }
 
 .logo {
@@ -39,8 +33,6 @@
 .nav {
   width: 100%;
   justify-content: space-between;
-  /* min-width:165px;
-  position: absolute; */
 }
 
 .playlist {
@@ -49,19 +41,16 @@
 }
 
 .playlistButton {
-  border-radius: 10px 10px 10px 10px;
+  border-radius: 40px 40px 40px 40px;
   border: hidden;
-  background-color: rgb(29, 110, 185);
+  background-color: #1DB954;
   color: #FFFFFF;
-  font-size: 16px;
-  /* width: 1px; */
-  /* height: 40px; */
+  font-size: 12px;
+  width: 185px;
+  height: 28px;
+  font-family: sans-serif;
 
 }
-
-/* .log {
-  margin-left: calc(50vw + 30px);
-} */
 
 #logButton {
   color: #FFFFFF;
@@ -74,7 +63,6 @@
 
 #nowPlaying {
   padding: 18px;
-  /* border-top: solid 1px; */
 }
 
 #art {
@@ -94,22 +82,15 @@
   color: white;
 }
 
-.App-link {
-  color: #09d3ac;
-}
-
 .button {
-  /* margin-left: 10px;
-  margin-right: 10px; */
-  font-size:12px;
+  font-size:14px;
   height: 40px;
   width: 180px;
   color: #FFFFFF;
   background-color: #1DB954;
   border-radius: 40px 40px 40px 40px;
   border: none;
-  margin-bottom: 18px;
-  margin-top: 20px;
+  margin-bottom: 24px;
 }
 
 .nav-tabs {
@@ -128,5 +109,5 @@ a.nav-item.nav-link {
 }
 
 body {
-  background-color: #191414;
+  background: #191414;
 }

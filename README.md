@@ -24,8 +24,9 @@
 Spotify api application 2.0a
  - logout function - DONE
  - fix scroll behavior when not playing - DONE
- - cleanup save playlist button and adjust behavior to open new window
+ - cleanup buttons - DONE
+ - back to top button when scrolled past main
  - play button on track results
  - widget player in navbar 
- - enhance UI
+ - if temp token expires during session, redirect to login screen instead.
  

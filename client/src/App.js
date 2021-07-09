@@ -30,7 +30,7 @@ class App extends React.Component {
 
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: 'Not Checked', albumArt: '' },
+      nowPlaying: { name: 'Not Checked', artists: '', albumArt: '' },
       userId: '',
       shortTermTrackData: [],
       mediumTermTrackData: [],
@@ -84,10 +84,12 @@ class App extends React.Component {
   
   getNowPlaying(){
     spotifyApi.getMyCurrentPlaybackState()
-      .then((response) => {
+    .then((response) => {
+        console.log(response.item.artists[0].name)
         this.setState({
           nowPlaying: { 
-            name: response.item.name, 
+            name: response.item.name,
+            artists: response.item.artists[0].name, 
             albumArt: response.item.album.images[0].url
           }
         });
@@ -301,7 +303,7 @@ class App extends React.Component {
   handleScroll() {
     if (this.state.nowPlaying.albumArt) {
       window.scroll({
-        top: 560,
+        top: 602,
         behavior: 'smooth'
       });
     }
@@ -324,6 +326,7 @@ class App extends React.Component {
     const albumArt = this.state.nowPlaying.albumArt;
     const loggedIn = this.state.loggedIn;
     const trackName = this.state.nowPlaying.name;
+    const artists = this.state.nowPlaying.artists;
 
     if (tab === 'shortTerm') {
       list = <ShortTermList data={shortTermTracks} />
@@ -342,7 +345,7 @@ class App extends React.Component {
               <li><strong>BEAT SHARE</strong></li>
               <li className="playlist">
                 {/* FINISH IMPLEMENTING --href*/}
-                <button className="playlistButton" onClick={this.makePlaylist}>Save as Spotify playlist!</button>          
+                <button className="playlistButton" onClick={this.makePlaylist}><strong>SAVE THIS PLAYLIST</strong></button>          
               </li>
             </div>
             <li className="log">
@@ -358,9 +361,13 @@ class App extends React.Component {
         <div>
           {albumArt ? <img id="art" src={albumArt} style={{ height: 500 }}/> : null}
         </div>
+          { albumArt ? 
+          <div id="nowPlaying">
+            <strong> By: { artists }</strong> 
+          </div> : null}
         { loggedIn &&
           <button className="button" onClick={() => this.getNowPlaying()}>
-            <strong>See what's playing</strong>
+            <strong>WHAT'S PLAYING?</strong>
           </button>
         }
         <div className="container">
