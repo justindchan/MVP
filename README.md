@@ -21,11 +21,12 @@
 - DEV URL: localhost:8888 -> authenticates and redirects to localhost:3000
 
 ## ROAD MAP FEATURES:
-Spotify api application 2.0a
+Spotify api application roadmap features
  - logout function - DONE
  - fix scroll behavior when not playing - DONE
  - cleanup buttons - DONE
- - ADD SPOTIFY LOGO ASAP
+ - ADD SPOTIFY LOGO ASAP - DONE
+ - Add feedback What's playing button is activated but nothing is playing 
  - back to top button when scrolled past main
  - play button on track results
  - widget player in navbar 
