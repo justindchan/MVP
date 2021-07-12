@@ -10,6 +10,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import axios from 'axios';
 import $ from 'jquery';
 import SpotifyWebApi from 'spotify-web-api-js';
+import logo from './Spotify_Icon_RGB_Green.png';
 const spotifyApi = new SpotifyWebApi();
 const logout = "http://localhost:8888";
 // import Nav from 'react-bootstrap/Nav';
@@ -337,13 +338,13 @@ class App extends React.Component {
 
     return (
       <div className="App">
+        {/* work on navbar */}
         <Navbar fixed="top" className="navbar navbar-inverse navbar-fixed-top navbar-dark bg-dark">
+            <img id="logo" src={logo}/>
           <ul className="nav">
-            {/* work on navbar */}
             <div className="logo">
               <li><strong>BEAT SHARE</strong></li>
               <li className="playlist">
-                {/* FINISH IMPLEMENTING --href*/}
                 <button className="playlistButton" onClick={this.makePlaylist}>SAVE THIS PLAYLIST</button>          
               </li>
             </div>
